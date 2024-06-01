@@ -1,8 +1,9 @@
 'use client'
 import "./globals.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageCorrect } from "./message-correct";
 import { MessageWrong } from "./message-wrong";
+import { message } from "antd";
 
 function App() {
   const [imgName, setImgName] = useState("A1");
@@ -10,6 +11,17 @@ function App() {
   const [canSelect, setCanSelect] = useState(true);
   const [isCorrecct, setIsCorrect] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
+
+  let timer = useRef<any>(null)
+
+  useEffect(() => {
+    timer.current = setInterval(() => { changeToNextImgSource() }, 20 * 1000)
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current)
+      }
+    }
+  }, [])
 
   const src = useMemo(() => `./img/${imgName}.png`, [imgName]);
 
@@ -60,6 +72,7 @@ function App() {
     if (isCorrecct) {
       return
     }
+    resetTimer()
     setIsCorrect(true)
     setTimeout(() => { setIsCorrect(false) }, 2000)
   }
@@ -67,8 +80,16 @@ function App() {
     if (isWrong) {
       return
     }
+    resetTimer()
     setIsWrong(true)
     setTimeout(() => { setIsWrong(false) }, 2000)
+  }
+
+  function resetTimer() {
+    if (timer.current) {
+      clearInterval(timer.current)
+    }
+    timer.current = setInterval(() => { changeToNextImgSource() }, 20 * 1000)
   }
 
   function changeToNextImgSource() {
