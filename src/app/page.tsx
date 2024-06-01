@@ -3,7 +3,7 @@ import "./globals.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageCorrect } from "./message-correct";
 import { MessageWrong } from "./message-wrong";
-import { message } from "antd";
+
 
 function App() {
   const [imgName, setImgName] = useState("A1");
@@ -12,16 +12,30 @@ function App() {
   const [isCorrecct, setIsCorrect] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
 
-  let timer = useRef<any>(null)
+  let beginTimer = useRef<any>(null)
+  let changeTimer = useRef<any>(null)
+
 
   useEffect(() => {
-    timer.current = setInterval(() => { changeToNextImgSource() }, 20 * 1000)
+    beginTimer.current = setTimeout(triggerChangeImg, 15 * 1000)
     return () => {
-      if (timer.current) {
-        clearInterval(timer.current)
-      }
+      clearTimer()
     }
   }, [])
+
+  function clearTimer() {
+    if (beginTimer.current) {
+      clearTimeout(beginTimer.current)
+    }
+    if (changeTimer.current) {
+      clearInterval(changeTimer.current)
+    }
+  }
+
+  function triggerChangeImg() {
+    clearTimer()
+    changeTimer.current = setInterval(changeToNextImgSource, 5 * 1000)
+  }
 
   const src = useMemo(() => `./img/${imgName}.png`, [imgName]);
 
@@ -86,10 +100,8 @@ function App() {
   }
 
   function resetTimer() {
-    if (timer.current) {
-      clearInterval(timer.current)
-    }
-    timer.current = setInterval(() => { changeToNextImgSource() }, 20 * 1000)
+    clearTimer()
+    beginTimer.current = setInterval(triggerChangeImg, 20 * 1000)
   }
 
   function changeToNextImgSource() {
