@@ -1,25 +1,17 @@
 'use client'
 import "./globals.css";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Progress, message } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { MessageCorrect } from "./message-correct";
+import { MessageWrong } from "./message-wrong";
 
 function App() {
   const [imgName, setImgName] = useState("A1");
-  const [result, setResult] = useState("");
+
   const [canSelect, setCanSelect] = useState(true);
-  // const [showProgress, setShowProgress] = useState(false);
-  // const [count, setCount] = useState(0);
+  const [isCorrecct, setIsCorrect] = useState(false);
+  const [isWrong, setIsWrong] = useState(false);
 
   const src = useMemo(() => `./img/${imgName}.png`, [imgName]);
-  const backgroundColor = useMemo(() => {
-    if (result === "right") {
-      return "#80ca3d";
-    } else if (result === "wrong") {
-      return "#FF0000";
-    } else {
-      return "#FFFFFF";
-    }
-  }, [result]);
 
   useEffect(() => {
     document.addEventListener("keyup", PopupKeyUp, false);
@@ -45,53 +37,39 @@ function App() {
   function handleKeyY() {
     console.log(imgName, imgName.at(0));
     if (imgName.at(0) === "A") {
-      setResult("right");
-      message.success("选择正确～ 🎉🎉🎉");
+      onCorrect()
     } else {
-      setResult("wrong");
-      message.error("选择错误～ 🤷🤷🤷");
+      onWrong()
     }
     setTimeout(changeToNextImgSource, 2000);
     setCanSelect(false);
-    // setShowProgress(true);
   }
   function handleKeyN() {
     console.log(imgName, imgName.at(0));
 
     if (imgName.at(0) === "B") {
-      setResult("right");
-      message.success("选择正确～ 🎉🎉🎉");
+      onCorrect()
     } else {
-      setResult("wrong");
-      message.error("选择错误～ 🤷🤷🤷");
+      onWrong()
     }
     setTimeout(changeToNextImgSource, 2000);
     setCanSelect(false);
-    // setShowProgress(true);
   }
 
-  // const changeCount = () => {
-  //   let currentCount = 1;
-  //   const interval = setInterval(() => {
-  //     console.log(currentCount);
-  //     if (currentCount <= 100) {
-  //       setCount(currentCount);
-  //       currentCount += 2;
-  //     } else {
-  //       setTimeout(() => {
-  //         setCount(0);
-  //       }, 40);
-  //       clearInterval(interval);
-  //     }
-  //   }, 20); // 每次增加的间隔时间，根据需要可以调整
-
-  //   setTimeout(() => {
-  //     setTimeout(() => {
-  //       setCount(0);
-  //     }, 20);
-  //     clearInterval(interval);
-  //   }, 2000); // 总共变化的时间
-  // };
+  function onCorrect() {
+    if (isCorrecct) {
+      return
+    }
+    setIsCorrect(true)
+    setTimeout(() => { setIsCorrect(false) }, 2000)
+  }
+  function onWrong() {
+    if (isWrong) {
+      return
+    }
+    setIsWrong(true)
+    setTimeout(() => { setIsWrong(false) }, 2000)
+  }
 
   function changeToNextImgSource() {
     let flag = Math.random() > 0.5 ? "A" : "B";
@@ -102,26 +80,23 @@ function App() {
       num = Math.ceil(Math.random() * 20);
     }
     setImgName(flag + num);
-    setResult("");
-    // setShowProgress(false);
     setCanSelect(true);
   }
+
+
 
   return (
     <div
       className="App"
-      style={{
-        backgroundColor,
-      }}
     >
       <div className="img-container">
         <img className="source-img" src={src} />
       </div>
+      <MessageCorrect trigger={isCorrecct} />
+      <MessageWrong trigger={isWrong} />
 
-      <div className="prompt">
-        <div>该图片是否是人工智能生成？ Y/N</div>
-      </div>
     </div>
+
   );
 }
 
