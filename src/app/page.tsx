@@ -8,7 +8,7 @@ import { MessageWrong } from "./message-wrong";
 function App() {
   const [imgName, setImgName] = useState("A1");
 
-  const [canSelect, setCanSelect] = useState(true);
+  const [canSelect, setCanSelect] = useState<Boolean>(true);
   const [isCorrecct, setIsCorrect] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
 
@@ -44,11 +44,14 @@ function App() {
     return () => {
       document.removeEventListener("keyup", PopupKeyUp, false);
     };
-  }, [imgName, canSelect]);
+  }, [imgName, canSelect,PopupKeyUp]);
 
-  const PopupKeyUp = (e: any) => {
+  function PopupKeyUp (e: any)  {
     if (!canSelect) {
       return;
+    }
+    if (canSelect === false) {
+      return
     }
     setCanSelect(false);
     if (e.code === "KeyY") {
