@@ -58,7 +58,7 @@ function App() {
       handleKeyN();
     }
   };
-  console.log(imgName);
+  console.log('>>',imgName);
 
   function handleKeyY() {
     console.log(imgName, imgName.at(0));
