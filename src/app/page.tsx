@@ -108,9 +108,9 @@ function App() {
     let flag = Math.random() > 0.5 ? "A" : "B";
     let num;
     if (flag === "A") {
-      num = Math.ceil(Math.random() * 11);
+      num = Math.ceil(Math.random() * 34);
     } else {
-      num = Math.ceil(Math.random() * 20);
+      num = Math.ceil(Math.random() * 87);
     }
     setImgName(flag + num);
     setCanSelect(true);
