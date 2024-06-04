@@ -44,9 +44,9 @@ function App() {
     return () => {
       document.removeEventListener("keyup", PopupKeyUp, false);
     };
-  }, [imgName, canSelect,PopupKeyUp]);
+  }, [imgName, canSelect, PopupKeyUp]);
 
-  function PopupKeyUp (e: any)  {
+  function PopupKeyUp(e: any) {
     if (!canSelect) {
       return;
     }
@@ -61,7 +61,7 @@ function App() {
       handleKeyN();
     }
   };
-  console.log('>>',imgName);
+  console.log('>>>', imgName);
 
   function handleKeyY() {
     console.log(imgName, imgName.at(0));
