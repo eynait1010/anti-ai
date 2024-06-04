@@ -47,28 +47,25 @@ body {
   position: absolute;
   left: 50%;
   bottom: 130px;
-  width: 500px;
-  height: 120px;
+  width: 450px;
+  height: 108px;
   transform: translate(-50%,50%);
   animation: 410ms ease-in-out show forwards;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: Courier;
+  font-size: 72px;
+  color:#000000;
+  font-weight: bold;
 }
 
 .message-success {
   background-color: #FF0081;
-  color:#000000;
-  font-size: 80px;
-  font-weight: bold;
 }
 
 .message-fail {
   background-color: #00ADFF;
-  color:#000000;
-  font-size: 80px;
-  font-weight: bold;
 }
 
 @keyframes show {
@@ -81,6 +78,6 @@ body {
   }
 }
 .wrong {
-  padding-bottom: 3px;
+  padding-bottom: 2px;
 }
 
